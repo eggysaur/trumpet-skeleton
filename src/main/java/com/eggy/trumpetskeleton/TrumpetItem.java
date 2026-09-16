@@ -37,7 +37,7 @@ public class TrumpetItem extends Item {
                 player.getX(), player.getY(), player.getZ(),
                 TrumpetSkeleton.TRUMPET_DOOT.value(),
                 SoundSource.PLAYERS,
-                1.5f, pitch
+                ModConfig.SOUND_VOLUME.get().floatValue(), pitch
         );
 
         if (!level.isClientSide()) {
@@ -61,8 +61,8 @@ public class TrumpetItem extends Item {
                 }
             }
 
-            // Apply a 30-tick (1.5s) cooldown
-            player.getCooldowns().addCooldown(this, 30);
+            // config
+            player.getCooldowns().addCooldown(this, ModConfig.TRUMPET_COOLDOWN.get());
         }
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(itemStack);

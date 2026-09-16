@@ -69,7 +69,8 @@ public class TrumpetAttackGoal extends Goal {
     private void performTrumpetAttack() {
         float randomPitch = (float) (1.0D + this.skeleton.getRandom().nextGaussian() * 0.05D);
         this.skeleton.level().playSound(null, this.skeleton.getX(), this.skeleton.getY(), this.skeleton.getZ(),
-                TrumpetSkeleton.TRUMPET_DOOT.get(), SoundSource.HOSTILE, 1.5F, randomPitch);
+                TrumpetSkeleton.TRUMPET_DOOT.get(), SoundSource.HOSTILE, ModConfig.SOUND_VOLUME.get().floatValue(), randomPitch);
+        //config
 
         AABB area = this.skeleton.getBoundingBox().inflate(kbrange);
         List<LivingEntity> targets = this.skeleton.level().getEntitiesOfClass(LivingEntity.class, area);
