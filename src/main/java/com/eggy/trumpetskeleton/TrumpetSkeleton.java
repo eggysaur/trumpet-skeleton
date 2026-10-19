@@ -5,9 +5,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import org.slf4j.Logger;
 import net.neoforged.fml.config.ModConfig.Type;
 
@@ -79,14 +83,22 @@ public class TrumpetSkeleton {
             }).build()
     );
 
+    private void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+        event.register(
+                TRUMPET_SKELETON.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+        );
+    }
+
     public TrumpetSkeleton(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the config (using your com.eggy.trumpetskeleton.ModConfig)
         modContainer.registerConfig(Type.COMMON, ModConfig.SPEC);
 
-        // Register entity attributes event listener
         modEventBus.addListener(this::registerEntityAttributes);
+        modEventBus.addListener(this::registerSpawnPlacements);
 
-        // Register all registries
         SOUND_EVENTS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);

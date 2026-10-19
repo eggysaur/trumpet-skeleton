@@ -38,7 +38,7 @@ public class ModConfig {
         BUILDER.push("Spawn Settings");
         SKELETON_SPAWN_WEIGHT = BUILDER
                 .comment("Spawn weight lottery tickets. Higher means more frequent.")
-                .defineInRange("spawnWeight", 2, 1, 100);
+                .defineInRange("spawnWeight", 1, 1, 100);
 
         SPAWN_MIN_COUNT = BUILDER
                 .comment("Minimum number of skeletons in a group.")
@@ -46,7 +46,7 @@ public class ModConfig {
 
         SPAWN_MAX_COUNT = BUILDER
                 .comment("Maximum number of skeletons in a group.")
-                .defineInRange("maxGroupSize", 3, 1, 10);
+                .defineInRange("maxGroupSize", 2, 1, 10);
         BUILDER.pop();
 
         SPEC = BUILDER.build();
