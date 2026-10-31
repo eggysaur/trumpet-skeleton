@@ -3,14 +3,7 @@
   "textures": {
     "layer0": "trumpetskeleton:item/trumpet"
   },
-  "overrides": [
-    {
-      "predicate": {
-        "trumpetskeleton:tooting": 1
-      },
-      "model": "trumpetskeleton:item/tooting_trumpet"
-    }
-  ],
+
   "display": {
     "thirdperson_righthand": {
       "rotation": [-50, -90, -9],

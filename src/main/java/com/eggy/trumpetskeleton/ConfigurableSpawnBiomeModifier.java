@@ -16,14 +16,19 @@ public record ConfigurableSpawnBiomeModifier(HolderSet<Biome> biomes) implements
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+        int weight = ModConfig.SKELETON_SPAWN_WEIGHT.get();
+        int min = ModConfig.SPAWN_MIN_COUNT.get();
+
+        int max = Math.max(min, ModConfig.SPAWN_MAX_COUNT.get());
+
         if (phase == Phase.ADD && this.biomes.contains(biome)) {
             builder.getMobSpawnSettings().addSpawn(
                     MobCategory.MONSTER,
                     new MobSpawnSettings.SpawnerData(
                             TrumpetSkeleton.TRUMPET_SKELETON.get(),
-                            ModConfig.SKELETON_SPAWN_WEIGHT.get(),
-                            ModConfig.SPAWN_MIN_COUNT.get(),
-                            ModConfig.SPAWN_MAX_COUNT.get()
+                            weight,
+                            min,
+                            max
                     )
             );
         }

@@ -1,6 +1,7 @@
 package com.eggy.trumpetskeleton;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
@@ -9,7 +10,6 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import org.slf4j.Logger;
@@ -57,19 +57,17 @@ public class TrumpetSkeleton {
             () -> EntityType.Builder.of(TrumpetSkeletonEntity::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.99f) // Standard skeleton hitbox size
                     .clientTrackingRange(8)
-                    .build("trumpet_skeleton")
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(TrumpetSkeleton.MODID, "trumpet_skeleton")))
     );
 
-    public static final DeferredItem<Item> TRUMPET = ITEMS.register("trumpet",
-            () -> new TrumpetItem(new Item.Properties().stacksTo(1).durability(64))
+    public static final DeferredItem<Item> TRUMPET = ITEMS.registerItem("trumpet",
+            properties -> new TrumpetItem(properties.stacksTo(1).durability(64))
     );
 
-    public static final DeferredItem<DeferredSpawnEggItem> TRUMPET_SKELETON_SPAWN_EGG = ITEMS.register("trumpet_skeleton_spawn_egg",
-            () -> new DeferredSpawnEggItem(
-                    TRUMPET_SKELETON,
-                    0xFFFFFF,
-                    0xFFFFFF,
-                    new Item.Properties()
+    public static final DeferredItem<SpawnEggItem> TRUMPET_SKELETON_SPAWN_EGG = ITEMS.registerItem("trumpet_skeleton_spawn_egg",
+            properties -> new SpawnEggItem(
+                    TRUMPET_SKELETON.get(),
+                    properties
             )
     );
 
@@ -87,7 +85,7 @@ public class TrumpetSkeleton {
         event.register(
                 TRUMPET_SKELETON.get(),
                 SpawnPlacementTypes.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Heightmap.Types.MOTION_BLOCKING,
                 Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
         );

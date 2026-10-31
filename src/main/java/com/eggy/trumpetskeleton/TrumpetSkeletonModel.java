@@ -2,43 +2,50 @@ package com.eggy.trumpetskeleton;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkeletonModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 
-public class TrumpetSkeletonModel extends SkeletonModel<AbstractSkeleton> {
+
+
+public class TrumpetSkeletonModel extends SkeletonModel<TrumpetSkeletonRenderState> {
+
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(TrumpetSkeleton.MODID, "trumpet_skeleton"),
+            "main"
+    );
 
     public TrumpetSkeletonModel (ModelPart root){
         super(root);
     }
 
     @Override
-    public void setupAnim(AbstractSkeleton entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        boolean isLeftHanded = entity.isLeftHanded();
+    public void setupAnim(TrumpetSkeletonRenderState state) {
+        boolean isLeftHanded = state.isLeftHanded;
 
-
-        if (entity.isUsingItem()) {
+        if (state.isUsingItem) {
             if (isLeftHanded) {
-                this.leftArmPose = HumanoidModel.ArmPose.TOOT_HORN;
-                this.rightArmPose = HumanoidModel.ArmPose.EMPTY;
+                state.leftArmPose = HumanoidModel.ArmPose.TOOT_HORN;
+                state.rightArmPose = HumanoidModel.ArmPose.EMPTY;
             } else {
-                this.rightArmPose = HumanoidModel.ArmPose.TOOT_HORN;
-                this.leftArmPose = HumanoidModel.ArmPose.EMPTY;
+                state.rightArmPose = HumanoidModel.ArmPose.TOOT_HORN;
+                state.leftArmPose = HumanoidModel.ArmPose.EMPTY;
             }
         } else {
             if (isLeftHanded) {
-                this.leftArmPose = HumanoidModel.ArmPose.ITEM;
-                this.rightArmPose = HumanoidModel.ArmPose.EMPTY;
+                state.leftArmPose = HumanoidModel.ArmPose.ITEM;
+                state.rightArmPose = HumanoidModel.ArmPose.EMPTY;
             } else {
-                this.rightArmPose = HumanoidModel.ArmPose.ITEM;
-                this.leftArmPose = HumanoidModel.ArmPose.EMPTY;
+                state.rightArmPose = HumanoidModel.ArmPose.ITEM;
+                state.leftArmPose = HumanoidModel.ArmPose.EMPTY;
             }
         }
 
+        super.setupAnim(state);
 
-        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-
-
-        if (entity.isUsingItem()) {
+        if (state.isUsingItem) {
             if (isLeftHanded) {
                 this.rightArm.xRot = this.leftArm.xRot;
                 this.rightArm.yRot = -this.leftArm.yRot;
@@ -49,7 +56,6 @@ public class TrumpetSkeletonModel extends SkeletonModel<AbstractSkeleton> {
                 this.leftArm.zRot = -this.rightArm.zRot;
             }
         } else {
-            // Apply the custom idle tilt when walking normally
             this.rightArm.xRot = (float) -(Math.PI / 10) + this.rightArm.xRot * 0.5f;
             this.leftArm.xRot = (float) -(Math.PI / 10) + this.leftArm.xRot * 0.5f;
         }
